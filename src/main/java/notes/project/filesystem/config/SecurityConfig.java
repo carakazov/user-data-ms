@@ -12,8 +12,9 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
-@KeycloakConfiguration
-public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+//@KeycloakConfiguration
+public class SecurityConfig { /*extends KeycloakWebSecurityConfigurerAdapter {
+
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -38,6 +39,8 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         http.csrf()
             .disable()
             .authorizeRequests()
-            .anyRequest().authenticated();
+            .anyRequest().permitAll();
     }
+
+     */
 }

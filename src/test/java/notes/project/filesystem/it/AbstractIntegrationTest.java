@@ -27,7 +27,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.shaded.org.apache.commons.io.FileUtils;
 
 import static notes.project.filesystem.utils.TestDataConstants.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -56,87 +55,5 @@ public abstract class AbstractIntegrationTest {
 
     @Inject
     protected TestEntityManager testEntityManager;
-
-    protected Cluster findClusterByTitle(String title) {
-        return testEntityManager.getEntityManager().createQuery(
-            "select c from clusters c where c.title = :title",
-            Cluster.class
-        ).setParameter("title", title).getSingleResult();
-    }
-
-    protected void createCluster(Cluster cluster) throws IOException {
-        Files.createDirectories(Path.of(applicationProperties.getRoot() + "/" + cluster.getExternalId().toString()));
-    }
-
-    protected void createDirectoryForFile() throws IOException {
-        Files.createDirectories(
-            Path.of(
-                applicationProperties.getRoot() + "/" + TestDataConstants.CLUSTER_EXTERNAL_ID + "/" + TestDataConstants.DIRECTORY_EXTERNAL_ID
-            )
-        );
-    }
-
-    protected void createDirectoryWithAlternativeExternalId() throws IOException {
-        Files.createDirectories(
-            Path.of(
-                applicationProperties.getRoot() + "/" + TestDataConstants.CLUSTER_EXTERNAL_ID + "/" + TestDataConstants.ALTERNATIVE_DIRECTORY_EXTERNAL_ID
-            )
-        );
-    }
-
-    protected void createDirectoryWithFile() throws IOException {
-        createDirectoryForFile();
-        Files.createFile(TestDataConstants.RESOLVED_PATH_FOR_CREATE_FILE);
-        try(FileOutputStream fileOutputStream = new FileOutputStream(TestDataConstants.RESOLVED_PATH_FOR_CREATE_FILE.toString())) {
-            fileOutputStream.write(TestDataConstants.FILE_CONTENT.getBytes(StandardCharsets.UTF_8));
-        }
-    }
-
-    protected void assertFileCreatedThenDelete(Path path) throws IOException{
-        assertTrue(Files.exists(path));
-        Files.delete(path);
-    }
-
-    protected void assertFileDeleted(Path path) throws IOException {
-        assertFalse(Files.exists(path));
-    }
-
-    protected void createZipFileWithSpecifiedEntry(Path path, UUID entryName) throws IOException {
-        Files.createFile(path);
-        try(ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(path.toString()))) {
-            writeEntry(zipOutputStream, entryName);
-        }
-    }
-
-    private void writeEntry(ZipOutputStream zipOutputStream, UUID entryName) throws IOException {
-        ZipEntry zipEntry = new ZipEntry(entryName.toString() + FileResolution.TXT.getResolution());
-        zipOutputStream.putNextEntry(zipEntry);
-        zipOutputStream.write(FILE_CONTENT.getBytes(StandardCharsets.UTF_8));
-        zipOutputStream.closeEntry();
-    }
-
-    protected void createZippedFile() throws IOException {
-        Files.createFile(TestDataConstants.ZIPPED_CREATED_FILE_PATH);
-        try(ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(ZIPPED_CREATED_FILE_PATH.toString()))) {
-            ZipEntry zipEntry = new ZipEntry(FILE_EXTERNAL_ID_STRING + FileResolution.TXT.getResolution());
-            zipOutputStream.putNextEntry(zipEntry);
-            zipOutputStream.write(FILE_CONTENT.getBytes(StandardCharsets.UTF_8));
-            zipOutputStream.closeEntry();
-        }
-    }
-
-    @BeforeEach
-    protected void createTestRoot() throws IOException {
-        Files.createDirectories(Path.of(applicationProperties.getRoot()));
-        Files.createDirectories(Path.of(applicationProperties.getArchiveRoot()));
-    }
-
-
-    @AfterEach
-    protected void deleteTestRoot() throws IOException {
-        FileUtils.deleteDirectory(new File(applicationProperties.getRoot()));
-        FileUtils.deleteDirectory(new File(applicationProperties.getArchiveRoot()));
-    }
-
 
 }

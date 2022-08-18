@@ -12,12 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Accessors(chain = true)
 public class ApplicationProperties {
-    private String root;
-    private String archiveRoot;
-    private Boolean recreateFullPath;
-    private Long daysBeforeArchive;
-    private Long daysBeforeDeleteArchive;
-    private Long daysBeforeNotification;
 
     private Map<String, String> errorMessages;
 

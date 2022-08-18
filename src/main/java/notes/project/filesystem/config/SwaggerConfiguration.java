@@ -48,8 +48,8 @@ public class SwaggerConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-            "Сервис управления файловой системы",
-            "Сервис предоставляет способы управления файловой системой",
+            "Какой-то сервис", //FIXME
+            "Какое-то описание", //FIXME
             "1.0.0",
             "Берите да пользуйтесь",
             contact(),

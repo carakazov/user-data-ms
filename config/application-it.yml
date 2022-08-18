@@ -6,6 +6,6 @@ spring:
     username: sa
     password:
 application:
-  root: target/root
-  archiveRoot: target/archive-root
-  recreateFullPath: true
+  errorMessages:
+    internalError: internal error
+    wrongRequestParameters: wrong request parameters
