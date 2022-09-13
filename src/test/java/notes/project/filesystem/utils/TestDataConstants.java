@@ -1,13 +1,6 @@
 package notes.project.filesystem.utils;
 
-import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
-
 import lombok.experimental.UtilityClass;
-import notes.project.filesystem.model.EventType;
-import notes.project.filesystem.model.FileResolution;
 
 @UtilityClass
 public class TestDataConstants {

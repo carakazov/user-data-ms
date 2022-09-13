@@ -6,7 +6,6 @@ import lombok.experimental.UtilityClass;
 import notes.project.filesystem.dto.*;
 import notes.project.filesystem.exception.ExceptionCode;
 import notes.project.filesystem.exception.ValidationException;
-import notes.project.filesystem.model.EventType;
 
 import static notes.project.filesystem.utils.TestDataConstants.*;
 
