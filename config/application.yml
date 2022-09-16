@@ -1,3 +1,5 @@
+server:
+  port: 8090
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -11,11 +13,29 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  cloud:
+    stream:
+      function:
+        definition:
+          newUserListener
+      kafka:
+        binder:
+          brokers: localhost
+          defaultBrokerPort: 9092
+          replication-factor: 1
+      bindings:
+        newUserListener-in-0:
+          destination: additional.info.topic
+          group: registration.ms.group
+          consumer:
+            concurrency: 10
+            max-attempts: 3
 
 application:
   errorMessages:
     internalError: internal error
     wrongRequestParameters: wrong request parameters
+    resourceNotFount: Requested resource not found.
 
 
 #keycloak:
