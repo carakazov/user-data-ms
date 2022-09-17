@@ -12,6 +12,6 @@ public interface UserRegistrationAdditionalInfoMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "type", source = "type")
     @Mapping(target = "client", source = "client")
-    @Mapping(target = "value", expression = "java(info.getValue().toString())")
+    @Mapping(target = "info", expression = "java(info.getValue().toString())")
     AdditionalInfo to(UserInfoAdditionalInfoDto info, AdditionalInfoType type, Client client);
 }

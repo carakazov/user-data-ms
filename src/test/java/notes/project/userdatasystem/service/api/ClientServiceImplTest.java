@@ -1,12 +1,18 @@
 package notes.project.userdatasystem.service.api;
 
+import java.util.Collections;
 import java.util.Optional;
 
+import liquibase.pro.packaged.D;
+import notes.project.userdatasystem.dto.ClientDto;
 import notes.project.userdatasystem.exception.NotFoundException;
 import notes.project.userdatasystem.model.Client;
 import notes.project.userdatasystem.repository.ClientRepository;
 import notes.project.userdatasystem.service.api.impl.ClientServiceImpl;
+import notes.project.userdatasystem.utils.ApiUtils;
 import notes.project.userdatasystem.utils.DbUtils;
+import notes.project.userdatasystem.utils.TestUtils;
+import notes.project.userdatasystem.utils.mapper.api.ClientDtoMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,12 +31,18 @@ import static notes.project.userdatasystem.utils.TestDataConstants.*;
 class ClientServiceImplTest {
     @Mock
     private ClientRepository repository;
+    @Mock
+    private AdditionalInfoService additionalInfoService;
 
     private ClientService service;
 
     @BeforeEach
     void init() {
-        service = new ClientServiceImpl(repository);
+        service = new ClientServiceImpl(
+            repository,
+            additionalInfoService,
+            TestUtils.getComplexMapper(ClientDtoMapper.class)
+        );
     }
 
     @Test
@@ -70,5 +82,46 @@ class ClientServiceImplTest {
         );
 
         verify(repository).findBySystemSystemNameAndEmail(SYSTEM_NAME, EMAIL);
+    }
+
+    @Test
+    void findClientByExternalIdSuccess() {
+        Client expected = DbUtils.client();
+
+        when(repository.findByExternalId(any())).thenReturn(Optional.of(expected));
+
+        Client actual = service.findClientByExternalId(EXTERNAL_ID);
+
+        assertEquals(expected, actual);
+
+        verify(repository).findByExternalId(EXTERNAL_ID);
+    }
+
+    @Test
+    void findClientByExternalIdWhenThrow() {
+        when(repository.findByExternalId(any())).thenReturn(Optional.empty());
+
+        assertThrows(
+            NotFoundException.class,
+            () -> service.findClientByExternalId(EXTERNAL_ID)
+        );
+
+        verify(repository).findByExternalId(EXTERNAL_ID);
+    }
+
+    @Test
+    void getSingleClientSuccess() {
+        Client client = DbUtils.client();
+        ClientDto expected = ApiUtils.clientDto();
+
+        when(repository.findByExternalId(any())).thenReturn(Optional.of(client));
+        when(additionalInfoService.findByClient(any())).thenReturn(Collections.singletonList(DbUtils.additionalInfo()));
+
+        ClientDto actual = service.getSingleClient(EXTERNAL_ID);
+
+        assertEquals(expected, actual);
+
+        verify(repository).findByExternalId(client.getExternalId());
+        verify(additionalInfoService).findByClient(client);
     }
 }
