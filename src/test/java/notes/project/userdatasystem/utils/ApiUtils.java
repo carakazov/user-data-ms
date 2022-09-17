@@ -11,6 +11,24 @@ import static notes.project.userdatasystem.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+    public static SystemClientListResponseDto systemClientListResponseDto() {
+        return new SystemClientListResponseDto()
+            .setSystemName(SYSTEM_NAME)
+            .setClients(Collections.singletonList(clientListItemDto()));
+    }
+
+    public static ClientListItemDto clientListItemDto() {
+        ClientListItemDto dto = new ClientListItemDto();
+        dto.setName(NAME);
+        dto.setSurname(SURNAME);
+        dto.setMiddleName(MIDDLE_NAME);
+        dto.setBirthDate(DATE_OF_BIRTH);
+        dto.setExternalId(EXTERNAL_ID);
+        dto.setAdditionalInfo(Collections.singletonList(additionalInfoDto()));
+        dto.setRegistrationDate(REGISTRATION_DATE);
+        return dto;
+    }
+
     public static ClientDto clientDto() {
         return new ClientDto()
             .setName(NAME)

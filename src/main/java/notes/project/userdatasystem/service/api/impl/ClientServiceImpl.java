@@ -1,19 +1,24 @@
 package notes.project.userdatasystem.service.api.impl;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import liquibase.pro.packaged.C;
 import lombok.RequiredArgsConstructor;
 import notes.project.userdatasystem.dto.ClientDto;
+import notes.project.userdatasystem.dto.SystemClientListResponseDto;
 import notes.project.userdatasystem.exception.NotFoundException;
 import notes.project.userdatasystem.model.AdditionalInfo;
 import notes.project.userdatasystem.model.Client;
+import notes.project.userdatasystem.model.System;
 import notes.project.userdatasystem.repository.ClientRepository;
 import notes.project.userdatasystem.service.api.AdditionalInfoService;
 import notes.project.userdatasystem.service.api.ClientService;
+import notes.project.userdatasystem.service.api.SystemService;
 import notes.project.userdatasystem.utils.mapper.api.ClientDtoMapper;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +28,7 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository repository;
     private final AdditionalInfoService additionalInfoService;
     private final ClientDtoMapper clientDtoMapper;
+    private final SystemService systemService;
 
     @Override
     @Transactional
@@ -52,5 +58,19 @@ public class ClientServiceImpl implements ClientService {
         Client client = findClientByExternalId(externalId);
         List<AdditionalInfo> info = additionalInfoService.findByClient(client);
         return clientDtoMapper.to(client, info);
+    }
+
+    @Override
+    @Transactional
+    public SystemClientListResponseDto getAllClientsOfSystem(String systemName) {
+        System system = systemService.findBySystemName(systemName);
+        List<Client> clients = repository.findAllBySystem(system);
+        return new SystemClientListResponseDto(
+            system.getSystemName(),
+            clients.stream().map(item -> clientDtoMapper.toItem(
+                item,
+                additionalInfoService.findByClient(item)
+            )).collect(Collectors.toList())
+        );
     }
 }

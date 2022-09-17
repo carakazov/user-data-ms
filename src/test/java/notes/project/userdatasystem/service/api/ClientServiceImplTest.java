@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import liquibase.pro.packaged.D;
 import notes.project.userdatasystem.dto.ClientDto;
+import notes.project.userdatasystem.dto.SystemClientListResponseDto;
 import notes.project.userdatasystem.exception.NotFoundException;
 import notes.project.userdatasystem.model.Client;
+import notes.project.userdatasystem.model.System;
 import notes.project.userdatasystem.repository.ClientRepository;
 import notes.project.userdatasystem.service.api.impl.ClientServiceImpl;
 import notes.project.userdatasystem.utils.ApiUtils;
@@ -33,6 +35,8 @@ class ClientServiceImplTest {
     private ClientRepository repository;
     @Mock
     private AdditionalInfoService additionalInfoService;
+    @Mock
+    private SystemService systemService;
 
     private ClientService service;
 
@@ -41,7 +45,8 @@ class ClientServiceImplTest {
         service = new ClientServiceImpl(
             repository,
             additionalInfoService,
-            TestUtils.getComplexMapper(ClientDtoMapper.class)
+            TestUtils.getComplexMapper(ClientDtoMapper.class),
+            systemService
         );
     }
 
@@ -122,6 +127,26 @@ class ClientServiceImplTest {
         assertEquals(expected, actual);
 
         verify(repository).findByExternalId(client.getExternalId());
+        verify(additionalInfoService).findByClient(client);
+    }
+
+    @Test
+    void getAllClientsOfSystemSuccess() {
+        System system = DbUtils.system();
+        Client client = DbUtils.client();
+
+        SystemClientListResponseDto expected = ApiUtils.systemClientListResponseDto();
+
+        when(systemService.findBySystemName(any())).thenReturn(system);
+        when(repository.findAllBySystem(any())).thenReturn(Collections.singletonList(client));
+        when(additionalInfoService.findByClient(any())).thenReturn(Collections.singletonList(DbUtils.additionalInfo()));
+
+        SystemClientListResponseDto actual = service.getAllClientsOfSystem(SYSTEM_NAME);
+
+        assertEquals(expected, actual);
+
+        verify(systemService).findBySystemName(system.getSystemName());
+        verify(repository).findAllBySystem(system);
         verify(additionalInfoService).findByClient(client);
     }
 }
