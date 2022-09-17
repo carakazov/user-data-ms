@@ -18,4 +18,8 @@ public class ApplicationProperties {
     public String getMessage(String messageCode) {
         return errorMessages.get(messageCode);
     }
+
+    private String restorePasswordMessage;
+    private String sender;
+    private String topic;
 }

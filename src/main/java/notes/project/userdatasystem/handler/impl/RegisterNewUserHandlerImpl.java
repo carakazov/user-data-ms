@@ -37,7 +37,6 @@ public class RegisterNewUserHandlerImpl implements RegisterNewUserHandler {
         Client client = clientService.save(userRegistrationClientMapper.to(userInfo, system));
         proceedTypes(userInfo, system);
         saveAdditionalInfo(userInfo, client, system);
-        int a = 5;
     }
 
     private void saveAdditionalInfo(UserInfoDto userInfo, Client client, System system) {

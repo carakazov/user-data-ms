@@ -1,6 +1,8 @@
 package notes.project.userdatasystem.config;
 
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -44,5 +46,11 @@ public class ApplicationConfiguration {
             RestorePasswordRequestDto.class
         );
         return context.createUnmarshaller();
+    }
+
+
+    @Bean
+    public ExecutorService executorService() {
+        return Executors.newCachedThreadPool();
     }
 }
