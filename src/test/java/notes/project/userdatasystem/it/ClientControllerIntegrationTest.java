@@ -56,4 +56,19 @@ class ClientControllerIntegrationTest extends AbstractIntegrationTest {
 
         JSONAssert.assertEquals(expected, actual, false);
     }
+
+    @Test
+    void getAllClientsOfSystem() throws Exception {
+        testEntityManager.merge(DbUtils.system());
+        testEntityManager.merge(DbUtils.additionalInfoType());
+        testEntityManager.merge(DbUtils.client());
+        testEntityManager.merge(DbUtils.additionalInfo());
+
+        String expected = TestUtils.getClasspathResource("/api/ClientList.json");
+        String actual = mockMvc.perform(MockMvcRequestBuilders.get("/client/system name/list"))
+            .andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsString();
+
+        JSONAssert.assertEquals(expected, actual, false);
+    }
 }
