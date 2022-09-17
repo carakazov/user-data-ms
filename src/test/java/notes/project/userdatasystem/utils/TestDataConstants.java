@@ -46,4 +46,17 @@ public class TestDataConstants {
         "    <externalId>f725f44e-4377-4a9a-89b5-60086d8a91e1</externalId>\n" +
         "    <registrationDate>2022-10-12T10:10:10</registrationDate>\n" +
         "</userInfo>";
+
+    public static final String RESTORE_PASSWORD_CODE = "8IIH01lmrGbA6c2c3IyBmUegz";
+    public static final String RESTORE_PASSWORD_MESSAGE_TEMPLATE = "Для подтверждения нового пароля перейдите по ссылке http://localhost:8080/client/{restoreCode}/{clientExternalId}";
+    public static final String RESTORE_PASSWORD_MESSAGE_RESOLVED = "Для подтверждения нового пароля перейдите по ссылке http://localhost:8080/client/8IIH01lmrGbA6c2c3IyBmUegz/f725f44e-4377-4a9a-89b5-60086d8a91e1";
+    public static final String SENDER = "admin.box@mail.ru";
+    public static final String TOPIC = "password restoring";
+
+    public static final String RESTORE_PASSWORD_CORRECT_MESSAGE =
+        "<restorePasswordRequest>\n" +
+        "    <clientId>system name</clientId>\n" +
+        "    <restoreCode>8IIH01lmrGbA6c2c3IyBmUegz</restoreCode>\n" +
+        "    <contact>email@box.ru</contact>\n" +
+        "</restorePasswordRequest>\n";
 }

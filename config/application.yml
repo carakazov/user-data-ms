@@ -1,6 +1,17 @@
 server:
   port: 8090
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: project.notes.restore@gmail.com
+    password: pzjcmjfkogznsdzo
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://localhost:5432/user_data_system
@@ -17,7 +28,7 @@ spring:
     stream:
       function:
         definition:
-          newUserListener
+          newUserListener;restorePasswordListener
       kafka:
         binder:
           brokers: localhost
@@ -26,16 +37,25 @@ spring:
       bindings:
         newUserListener-in-0:
           destination: additional.info.topic
-          group: registration.ms.group
+          group: user.data.ms.group
           consumer:
             concurrency: 10
-            max-attempts: 3
+            max-attempts: 1
+        restorePasswordListener-in-0:
+          destination: restore.password.topic
+          group: user.data.ms.group
+          consumer:
+            concurrency: 10
+            max-attempts: 1
 
 application:
   errorMessages:
     internalError: internal error
     wrongRequestParameters: wrong request parameters
     resourceNotFount: Requested resource not found.
+  restorePasswordMessage: Для подтверждения нового пароля перейдите по ссылке http://${OAUTH_HOST:localhost}:${OAUTH_PORT:8080}/client/{restoreCode}/{clientExternalId}
+  sender: project.notes.restore@gmail.com
+  topic: Password restoring
 
 
 #keycloak:

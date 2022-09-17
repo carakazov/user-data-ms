@@ -1,7 +1,9 @@
 package notes.project.userdatasystem.utils;
 
+import dto.integration.kafka.RestorePasswordRequestDto;
 import dto.integration.kafka.UserInfoAdditionalInfoDto;
 import dto.integration.kafka.UserInfoDto;
+import org.springframework.mail.SimpleMailMessage;
 
 import static notes.project.userdatasystem.utils.TestDataConstants.*;
 
@@ -24,6 +26,14 @@ public class IntegrationUtils {
         dto.setExternalId(EXTERNAL_ID);
         dto.setRegistrationDate(REGISTRATION_DATE);
         dto.getAdditionalInfo().add(userInfoAdditionalInfoDto());
+        return dto;
+    }
+
+    public static RestorePasswordRequestDto restorePasswordRequestDto() {
+        RestorePasswordRequestDto dto = new RestorePasswordRequestDto();
+        dto.setClientId(SYSTEM_NAME);
+        dto.setRestoreCode(RESTORE_PASSWORD_CODE);
+        dto.setContact(EMAIL);
         return dto;
     }
 }
