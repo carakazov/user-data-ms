@@ -4,9 +4,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <!--Add registration date column-->
-    <include file="changelog/patches/registration-date-column/registration-date-column.xml"/>
+    <changeSet id="002" author="vadim.lebediantsev">
+        <renameColumn tableName="additional_info" oldColumnName="value" newColumnName="info"/>
+    </changeSet>
 
-    <!--Column rename-->
-    <include file="changelog/patches/column-rename/column-rename.xml"/>
 </databaseChangeLog>

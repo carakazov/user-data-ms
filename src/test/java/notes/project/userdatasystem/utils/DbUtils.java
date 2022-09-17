@@ -41,6 +41,6 @@ public class DbUtils {
             .setId(ID)
             .setType(additionalInfoType())
             .setClient(client())
-            .setValue(ADDITIONAL_INFO_VALUE);
+            .setInfo(ADDITIONAL_INFO_VALUE);
     }
 }

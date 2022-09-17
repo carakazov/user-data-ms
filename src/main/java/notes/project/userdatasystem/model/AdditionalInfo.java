@@ -2,6 +2,7 @@ package notes.project.userdatasystem.model;
 
 import javax.persistence.*;
 
+import liquibase.pro.packaged.J;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -21,5 +22,5 @@ public class AdditionalInfo {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    private String value;
+    private String info;
 }

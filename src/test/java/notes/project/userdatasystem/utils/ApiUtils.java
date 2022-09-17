@@ -11,6 +11,22 @@ import static notes.project.userdatasystem.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+    public static ClientDto clientDto() {
+        return new ClientDto()
+            .setName(NAME)
+            .setSurname(SURNAME)
+            .setMiddleName(MIDDLE_NAME)
+            .setBirthDate(DATE_OF_BIRTH)
+            .setExternalId(EXTERNAL_ID)
+            .setAdditionalInfo(Collections.singletonList(additionalInfoDto()));
+    }
+
+    public static AdditionalInfoDto additionalInfoDto() {
+        return new AdditionalInfoDto()
+            .setType(ADDITIONAL_INFO_TYPE)
+            .setValue(ADDITIONAL_INFO_VALUE);
+    }
+
     public static ErrorDto errorDto() {
         return new ErrorDto()
                 .setCode(EXCEPTION_CODE)
