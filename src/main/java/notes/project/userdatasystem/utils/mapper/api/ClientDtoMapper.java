@@ -3,12 +3,14 @@ package notes.project.userdatasystem.utils.mapper.api;
 import java.util.List;
 
 import liquibase.pro.packaged.C;
+import notes.project.userdatasystem.dto.ChangePersonalInfoDto;
 import notes.project.userdatasystem.dto.ClientDto;
 import notes.project.userdatasystem.dto.ClientListItemDto;
 import notes.project.userdatasystem.model.AdditionalInfo;
 import notes.project.userdatasystem.model.Client;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 
 @Mapper(componentModel = "spring", uses = AdditionalInfoMapper.class)
 public interface ClientDtoMapper {

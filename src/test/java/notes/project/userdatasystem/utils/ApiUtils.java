@@ -6,11 +6,38 @@ import lombok.experimental.UtilityClass;
 import notes.project.userdatasystem.dto.*;
 import notes.project.userdatasystem.exception.ExceptionCode;
 import notes.project.userdatasystem.exception.ValidationException;
+import notes.project.userdatasystem.validation.dto.ChangeClientPersonalInfoValidationDto;
 
 import static notes.project.userdatasystem.utils.TestDataConstants.*;
 
 @UtilityClass
 public class ApiUtils {
+    public static ChangeClientPersonalInfoValidationDto changeClientPersonalInfoValidationDto() {
+        return new ChangeClientPersonalInfoValidationDto()
+            .setEmailAlreadyInUse(Boolean.FALSE)
+            .setExistingTypes(Collections.singletonList(ADDITIONAL_INFO_TYPE))
+            .setTypesFromRequest(Collections.singletonList(ADDITIONAL_INFO_TYPE))
+            .setCreateNewTypes(Boolean.TRUE);
+    }
+
+    public static ChangeClientInfoRequestDto changeClientInfoRequestDto() {
+        return new ChangeClientInfoRequestDto()
+            .setClientExternalId(EXTERNAL_ID)
+            .setClientInfo(changePersonalInfo());
+    }
+
+    public static ChangePersonalInfoDto changePersonalInfo() {
+        return new ChangePersonalInfoDto()
+            .setNewValues(NEW_VALUES)
+            .setChangeAdditionalInfo(Collections.singletonList(changeAdditionalInfoDto()));
+    }
+
+    public static ChangeAdditionalInfoDto changeAdditionalInfoDto() {
+        return new ChangeAdditionalInfoDto()
+            .setType(ADDITIONAL_INFO_TYPE)
+            .setNewValue(NEW_ADDITIONAL_INFO_VALUE);
+    }
+
     public static SystemClientListResponseDto systemClientListResponseDto() {
         return new SystemClientListResponseDto()
             .setSystemName(SYSTEM_NAME)

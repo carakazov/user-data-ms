@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static notes.project.userdatasystem.utils.TestDataConstants.NEW_ADDITIONAL_INFO_VALUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -58,5 +59,14 @@ class AdditionalInfoServiceImplTest {
         assertEquals(expected, actual);
 
         verify(repository).findByClient(client);
+    }
+
+    @Test
+    void changeValueSuccess() {
+        AdditionalInfo expected = DbUtils.additionalInfo().setInfo(NEW_ADDITIONAL_INFO_VALUE);
+
+        AdditionalInfo actual = service.changeValue(DbUtils.additionalInfo(), NEW_ADDITIONAL_INFO_VALUE);
+
+        assertEquals(expected, actual);
     }
 }

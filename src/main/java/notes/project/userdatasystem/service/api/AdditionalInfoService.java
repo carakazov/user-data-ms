@@ -9,4 +9,6 @@ public interface AdditionalInfoService {
     AdditionalInfo save(AdditionalInfo additionalInfo);
 
     List<AdditionalInfo> findByClient(Client client);
+
+    AdditionalInfo changeValue(AdditionalInfo info, String newValue);
 }

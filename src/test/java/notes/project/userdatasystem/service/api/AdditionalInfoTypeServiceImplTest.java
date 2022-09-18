@@ -3,6 +3,7 @@ package notes.project.userdatasystem.service.api;
 import java.util.Optional;
 
 import notes.project.userdatasystem.exception.NotFoundException;
+import notes.project.userdatasystem.model.AdditionalInfo;
 import notes.project.userdatasystem.model.AdditionalInfoType;
 import notes.project.userdatasystem.repository.AdditionalInfoTypeRepository;
 import notes.project.userdatasystem.service.api.impl.AdditionalInfoTypeServiceImpl;

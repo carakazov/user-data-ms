@@ -2,6 +2,8 @@ package notes.project.userdatasystem.service.api;
 
 import java.util.UUID;
 
+import notes.project.userdatasystem.dto.ChangeClientInfoRequestDto;
+import notes.project.userdatasystem.dto.ChangePersonalInfoDto;
 import notes.project.userdatasystem.dto.ClientDto;
 import notes.project.userdatasystem.dto.SystemClientListResponseDto;
 import notes.project.userdatasystem.model.Client;
@@ -16,4 +18,6 @@ public interface ClientService {
     ClientDto getSingleClient(UUID externalId);
 
     SystemClientListResponseDto getAllClientsOfSystem(String systemName);
+
+    ClientDto changePersonalInfo(ChangeClientInfoRequestDto request, Boolean addNewParameter);
 }

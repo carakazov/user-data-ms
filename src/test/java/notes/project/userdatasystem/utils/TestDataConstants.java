@@ -2,9 +2,11 @@ package notes.project.userdatasystem.utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 import lombok.experimental.UtilityClass;
+import notes.project.userdatasystem.dto.ChangePersonalInfo;
 
 @UtilityClass
 public class TestDataConstants {
@@ -20,6 +22,7 @@ public class TestDataConstants {
     //Additional info
     public static final String ADDITIONAL_INFO_TYPE = "type";
     public static final String ADDITIONAL_INFO_VALUE = "value";
+    public static final String NEW_ADDITIONAL_INFO_VALUE = "new value";
 
     //Client
     public static final String NAME = "name";
@@ -29,6 +32,8 @@ public class TestDataConstants {
     public static final UUID EXTERNAL_ID = UUID.fromString("f725f44e-4377-4a9a-89b5-60086d8a91e1");
     public static final LocalDate DATE_OF_BIRTH = LocalDate.of(2000, 8, 21);
     public static final LocalDateTime REGISTRATION_DATE = LocalDateTime.of(2022, 10, 12, 10, 10, 10);
+    public static final String NEW_NAME = "new name";
+    public static final String NEW_SURNAME = "new surname";
 
 
     public static final String REGISTER_NEW_USER_CORRECT_MESSAGE =
@@ -59,4 +64,9 @@ public class TestDataConstants {
         "    <restoreCode>8IIH01lmrGbA6c2c3IyBmUegz</restoreCode>\n" +
         "    <contact>email@box.ru</contact>\n" +
         "</restorePasswordRequest>\n";
+
+    public static final Map<ChangePersonalInfo, String> NEW_VALUES = Map.of(
+        ChangePersonalInfo.NEW_NAME, NEW_NAME,
+        ChangePersonalInfo.NEW_SURNAME, NEW_SURNAME
+    );
 }

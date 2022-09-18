@@ -26,4 +26,10 @@ public class AdditionalInfoServiceImpl implements AdditionalInfoService {
     public List<AdditionalInfo> findByClient(Client client) {
         return repository.findByClient(client);
     }
+
+    @Override
+    @Transactional
+    public AdditionalInfo changeValue(AdditionalInfo info, String newValue) {
+        return info.setInfo(newValue);
+    }
 }

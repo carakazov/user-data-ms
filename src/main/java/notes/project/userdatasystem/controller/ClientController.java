@@ -2,17 +2,17 @@ package notes.project.userdatasystem.controller;
 
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import notes.project.userdatasystem.dto.ChangeClientInfoRequestDto;
 import notes.project.userdatasystem.dto.ClientDto;
 import notes.project.userdatasystem.dto.SystemClientListResponseDto;
 import notes.project.userdatasystem.service.api.ClientService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,5 +35,13 @@ public class ClientController {
         @PathVariable(name = "systemName") @ApiParam(value = "Название системы") String systemName
     ) {
         return clientService.getAllClientsOfSystem(systemName);
+    }
+
+    @PutMapping
+    public ClientDto changeClientPersonalInfo(
+        @RequestBody @Valid ChangeClientInfoRequestDto request,
+        @ApiParam(value = "Признак создания новых параметров") @RequestParam(name = "createNew", defaultValue = "false") Boolean createNew
+        ) {
+        return clientService.changePersonalInfo(request, createNew);
     }
 }
