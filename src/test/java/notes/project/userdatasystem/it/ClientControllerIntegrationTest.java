@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -66,6 +67,23 @@ class ClientControllerIntegrationTest extends AbstractIntegrationTest {
 
         String expected = TestUtils.getClasspathResource("/api/ClientList.json");
         String actual = mockMvc.perform(MockMvcRequestBuilders.get("/client/system name/list"))
+            .andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsString();
+
+        JSONAssert.assertEquals(expected, actual, false);
+    }
+
+    @Test
+    void changePersonalInfoSuccess() throws Exception {
+        testEntityManager.merge(DbUtils.system());
+        testEntityManager.merge(DbUtils.additionalInfoType());
+        testEntityManager.merge(DbUtils.client());
+        testEntityManager.merge(DbUtils.additionalInfo());
+
+        String expected = TestUtils.getClasspathResource("/api/ChangePersonalInfoResponse.json");
+        String actual = mockMvc.perform(MockMvcRequestBuilders.put("/client?createNew=true")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtils.getClasspathResource("/api/ChangePersonalInfoRequest.json")))
             .andExpect(status().isOk())
             .andReturn().getResponse().getContentAsString();
 

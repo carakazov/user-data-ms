@@ -4,9 +4,12 @@ import java.util.Collections;
 import java.util.Optional;
 
 import liquibase.pro.packaged.D;
+import notes.project.userdatasystem.dto.ChangeClientInfoRequestDto;
+import notes.project.userdatasystem.dto.ChangePersonalInfo;
 import notes.project.userdatasystem.dto.ClientDto;
 import notes.project.userdatasystem.dto.SystemClientListResponseDto;
 import notes.project.userdatasystem.exception.NotFoundException;
+import notes.project.userdatasystem.model.AdditionalInfo;
 import notes.project.userdatasystem.model.Client;
 import notes.project.userdatasystem.model.System;
 import notes.project.userdatasystem.repository.ClientRepository;
@@ -14,10 +17,15 @@ import notes.project.userdatasystem.service.api.impl.ClientServiceImpl;
 import notes.project.userdatasystem.utils.ApiUtils;
 import notes.project.userdatasystem.utils.DbUtils;
 import notes.project.userdatasystem.utils.TestUtils;
+import notes.project.userdatasystem.utils.mapper.api.AdditionalInfoMapper;
+import notes.project.userdatasystem.utils.mapper.api.AdditionalInfoTypeMapper;
 import notes.project.userdatasystem.utils.mapper.api.ClientDtoMapper;
+import notes.project.userdatasystem.validation.Validator;
+import notes.project.userdatasystem.validation.dto.ChangeClientPersonalInfoValidationDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -37,7 +45,10 @@ class ClientServiceImplTest {
     private AdditionalInfoService additionalInfoService;
     @Mock
     private SystemService systemService;
-
+    @Mock
+    private Validator<ChangeClientPersonalInfoValidationDto> changeClientPersonalInfoValidator;
+    @Mock
+    private AdditionalInfoTypeService additionalInfoTypeService;
     private ClientService service;
 
     @BeforeEach
@@ -46,7 +57,11 @@ class ClientServiceImplTest {
             repository,
             additionalInfoService,
             TestUtils.getComplexMapper(ClientDtoMapper.class),
-            systemService
+            systemService,
+            changeClientPersonalInfoValidator,
+            additionalInfoTypeService,
+            Mappers.getMapper(AdditionalInfoTypeMapper.class),
+            Mappers.getMapper(AdditionalInfoMapper.class)
         );
     }
 
@@ -148,5 +163,31 @@ class ClientServiceImplTest {
         verify(systemService).findBySystemName(system.getSystemName());
         verify(repository).findAllBySystem(system);
         verify(additionalInfoService).findByClient(client);
+    }
+
+    @Test
+    void changePersonalInfoSuccess() {
+        ChangeClientInfoRequestDto request = ApiUtils.changeClientInfoRequestDto();
+        AdditionalInfo info = DbUtils.additionalInfo().setInfo(NEW_ADDITIONAL_INFO_VALUE);
+        Client client = DbUtils.client();
+        ClientDto expected = ApiUtils.clientDto();
+        expected.setName(NEW_NAME);
+        expected.setSurname(NEW_SURNAME);
+        expected.getAdditionalInfo().get(0).setValue(NEW_ADDITIONAL_INFO_VALUE);
+
+        when(repository.findByExternalId(any())).thenReturn(Optional.of(client));
+        when(additionalInfoService.findByClient(any())).thenReturn(Collections.singletonList(info));
+        when(repository.existsBySystemAndEmail(any(), any())).thenReturn(Boolean.FALSE);
+        when(additionalInfoService.changeValue(any(), any())).thenReturn(info);
+
+        ClientDto actual = service.changePersonalInfo(request, Boolean.TRUE);
+
+        assertEquals(expected, actual);
+
+        verify(repository).findByExternalId(client.getExternalId());
+        verify(additionalInfoService).findByClient(client);
+        verify(repository).existsBySystemAndEmail(client.getSystem(), request.getClientInfo().getNewValues().get(
+            ChangePersonalInfo.NEW_EMAIL));
+        verify(additionalInfoService).changeValue(info, NEW_ADDITIONAL_INFO_VALUE);
     }
 }

@@ -58,6 +58,8 @@ application:
     internalError: internal error
     wrongRequestParameters: wrong request parameters
     resourceNotFount: Requested resource not found.
+    emailAlreadyInUse: This email already in use.
+    unrecognizedTypes: Client does not have one of the types.
   restorePasswordMessage: Для подтверждения нового пароля перейдите по ссылке http://${OAUTH_HOST:localhost}:${OAUTH_PORT:8080}/client/{restoreCode}/{clientExternalId}
   sender: project.notes.restore@gmail.com
   topic: Password restoring

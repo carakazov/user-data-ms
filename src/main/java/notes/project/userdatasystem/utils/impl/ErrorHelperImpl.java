@@ -70,7 +70,7 @@ public class ErrorHelperImpl implements ErrorHelper {
     }
 
     private void logException(Exception exception) {
-        log.error("Exception occurred. Source message: {}", exception.getMessage());
+        log.error("Exception occurred. Source message: {}", exception);
     }
 
     private void logException(RuntimeException exception) {
