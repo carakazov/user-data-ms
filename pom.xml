@@ -227,6 +227,49 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>download-xjc</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <configuration>
+                            <url>http://localhost:8080/my/content</url>
+                            <fromFile>xjc/global.xjb</fromFile>
+                            <toDir>src/main/resources/xjc</toDir>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-xsd-1</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <configuration>
+                            <url>http://localhost:8080/my/content</url>
+                            <fromFile>xjc/xsd/InitializeRestoringPasswordProcessKafkaMessage.xsd</fromFile>
+                            <toDir>src/main/resources/xjc/xsd</toDir>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-xsd-2</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>download-single</goal>
+                        </goals>
+                        <configuration>
+                            <url>http://localhost:8080/my/content</url>
+                            <fromFile>xjc/xsd/ServiceRegistrationKafkaResponse.xsd</fromFile>
+                            <toDir>src/main/resources/xjc/xsd</toDir>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
