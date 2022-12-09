@@ -20,6 +20,7 @@ public interface ClientDtoMapper {
     @Mapping(target = "middleName", source = "client.middleName")
     @Mapping(target = "birthDate", source = "client.dateOfBirth")
     @Mapping(target = "externalId", source = "client.externalId")
+    @Mapping(target = "email", source = "client.email")
     @Mapping(target = "additionalInfo", source = "info")
     ClientDto to(Client client, List<AdditionalInfo> info);
 
