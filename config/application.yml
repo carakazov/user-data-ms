@@ -16,7 +16,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://${OAUTH_HOST:localhost}:${OAUTH_PORT:8080}/.well-known/jwks.json
+          jwk-set-uri: http://${OAUTH_HOST:localhost}:${OAUTH_PORT:8060}/.well-known/jwks.json
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://localhost:5432/user_data_system

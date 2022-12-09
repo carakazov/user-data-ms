@@ -23,6 +23,8 @@ public class ClientDto {
     private LocalDate birthDate;
     @ApiModelProperty(value = "Внешний ID пользователя")
     private UUID externalId;
+    @ApiModelProperty(value = "Почта")
+    private String email;
     @ApiModelProperty(value = "Дополнительная информация по пользователю")
     private List<AdditionalInfoDto> additionalInfo;
 }
